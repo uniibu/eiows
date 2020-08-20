@@ -1,0 +1,4 @@
+build
+dist/*.node
+build_log.txt
+package-lock.json
