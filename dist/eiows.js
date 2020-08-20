@@ -140,8 +140,10 @@ class Server {
 
     handleUpgrade(request, socket, upgradeHead, callback) {
         const secKey = request.headers['sec-websocket-key'];
+        let upgrade = request.headers['upgrade'];
+        upgrade = upgrade ? upgrade.toLowerCase(): null;
         const socketHandle = socket.ssl ? socket._parent._handle : socket._handle;
-        if (socketHandle && secKey && secKey.length === 24) {
+        if (upgrade === 'websocket' && socketHandle && secKey && secKey.length === 24) {
             const sslState = socket.ssl ? native.getSSLContext(socket.ssl) : null;
             socket.setNoDelay(this._noDelay);
             const ticket = native.transfer(socketHandle.fd === -1 ? socketHandle : socketHandle.fd, sslState);
